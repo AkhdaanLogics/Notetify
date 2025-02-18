@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Spotify Auth Configuration
-    const clientId = process.env.SPOTIFY_CLIENT_ID || 'd3c73611110e4fb58aa1d1697e272a8e';
-    const redirectUri = process.env.SPOTIFY_REDIRECT_URI || window.location.origin + '/';
+    const clientId = 'd3c73611110e4fb58aa1d1697e272a8e';
+    const redirectUri = 'http://127.0.0.1:5500/Notetify/';
     const scopes = [
         'user-read-private',
         'user-read-email', 
@@ -265,20 +265,73 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    // Helper function for exponential backoff
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    async function fetchWithRetry(url, options, retries = 3, delay = 1000) {
+        try {
+            const response = await fetch(url, options);
+            
+            if (response.status === 429) {
+                // Get retry-after header or default to 1 second
+                const retryAfter = parseInt(response.headers.get('Retry-After') || '1', 10);
+                const waitTime = Math.max(retryAfter, 1) * 1000; // Ensure at least 1 second
+                
+                if (retries > 0) {
+                    console.log(`Rate limited. Retrying in ${waitTime/1000} seconds...`);
+                    await sleep(waitTime);
+                    return fetchWithRetry(url, options, retries - 1, delay * 2);
+                }
+                
+                throw new Error(`Rate limit exceeded. Please try again later.`);
+            }
+            
+            if (!response.ok) {
+                throw new Error(`HTTP status ${response.status}`);
+            }
+            
+            return response;
+        } catch (error) {
+            if (retries > 0) {
+                console.log(`Request failed. Retrying in ${delay/1000} seconds...`);
+                await sleep(delay);
+                return fetchWithRetry(url, options, retries - 1, delay * 2);
+            }
+            throw error;
+        }
+    }
+
+
     async function fetchTopTracks() {
         console.log('Fetching top tracks...');
         const accessToken = localStorage.getItem('access_token');
+        // Clear previous receipt content
+        const receiptContent = document.querySelector('.receipt-content');
+        if (receiptContent) receiptContent.innerHTML = '';
+
         if (!accessToken) {
             console.error('No access token found');
-            showError('No access token found');
+            console.log('LocalStorage contents:', localStorage);
+            showError('No access token found. Please login again.');
+            loginWithSpotify();
             return;
         }
-        
+
         try {
-            const response = await fetch('https://api.spotify.com/v1/me/top/tracks?limit=10&time_range=short_term', {
-                headers: { 'Authorization': 'Bearer ' + accessToken }
-            });
-            
+            console.log('Access token:', accessToken);
+            const response = await fetchWithRetry(
+                'https://api.spotify.com/v1/me/top/tracks?limit=10&time_range=medium_term',
+                {
+                    headers: { 
+                        'Authorization': 'Bearer ' + accessToken,
+                        'Content-Type': 'application/json'
+                    }
+                }
+            );
+            console.log('API Response status:', response.status);
+
             if (!response.ok) {
                 if (response.status === 401) {
                     await refreshAccessToken();
@@ -286,18 +339,23 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
                 throw new Error('HTTP status ' + response.status);
             }
-            
+
             const data = await response.json();
-            
+            console.log('Track data:', data);
+            if (!data.items || data.items.length === 0) {
+                showError('No tracks found. Please make sure you have listening history on Spotify.');
+                return;
+            }
+
             // Fetch user profile for the header
             const profile = await fetchUserProfile(accessToken);
-            
+
             // Update the receipt header
             updateReceiptHeader(profile);
-            
-            // Create the receipt with tracks
+
+            // Create the receipt
             createReceipt(data.items);
-            
+
         } catch (error) {
             showError('Error fetching top tracks: ' + error);
         }
