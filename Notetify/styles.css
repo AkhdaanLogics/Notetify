@@ -4,10 +4,13 @@ body {
     color: #FFFFFF;
 }
 
+
+
 .receipt-card {
     background-color: #FFFFFF;
     color: #121212;
     border-radius: 8px;
+
     padding: 24px;
     width: 320px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);

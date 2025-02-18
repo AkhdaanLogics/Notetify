@@ -7,13 +7,13 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
-    <!-- Add html2canvas for receipt download functionality -->
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 </head>
 <body>
     <header class="fixed w-full bg-black bg-opacity-80 backdrop-filter backdrop-blur-md z-10">
         <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <div class="text-2xl font-bold">Notetify</div>
+                        <div class="text-2xl font-bold">Notetify</div>
+
             <ul class="hidden md:flex space-x-10">
                 <li><a href="#" class="hover:text-green-400 transition">Beranda</a></li>
                 <li><a href="#" class="hover:text-green-400 transition">Tentang</a></li>
@@ -32,11 +32,12 @@
     </div>
 
     <main>
-        <!-- Login Section - visible initially -->
+        <!-- Login Section -->
         <section class="min-h-screen flex flex-col items-center justify-center px-4 md:px-0 login-section">
             <div class="max-w-6xl mx-auto flex flex-col-reverse md:flex-row items-center justify-between gap-12">
                 <div class="md:w-1/2 text-center md:text-left space-y-6">
                     <h1 class="text-4xl md:text-6xl font-bold">Notetify</h1>
+
                     <p class="text-xl opacity-80">Ubah riwayat musik Spotify-mu menjadi receipt digital yang estetik.</p>
                     <div class="pt-6">
                         <a href="#" id="spotify-login" class="spotify-btn inline-block">Masuk dengan Spotify</a>
@@ -63,7 +64,7 @@
                                 <span>2:55</span>
                             </div>
                         </div>
-                        <img src="/api/placeholder/200/50" alt="barcode" class="barcode">
+                        <img src="https://via.placeholder.com/200x50" alt="barcode" class="barcode">
                         <div class="receipt-footer">
                             <p>Terima kasih telah mendengarkan!</p>
                             <p>notetify.com</p>
@@ -73,12 +74,12 @@
             </div>
         </section>
 
-        <!-- App Section - hidden initially -->
+        <!-- App Section -->
         <section class="min-h-screen flex flex-col items-center justify-center px-4 md:px-0 app-section hidden">
             <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-12">
                 <div class="md:w-1/2 text-center md:text-left space-y-6">
                     <div class="flex items-center gap-4 mb-4">
-                        <img id="user-image" src="/api/placeholder/50/50" alt="User profile" class="rounded-full w-12 h-12">
+                        <img id="user-image" src="https://via.placeholder.com/50x50" alt="User profile" class="rounded-full w-12 h-12">
                         <h2 class="text-2xl font-bold">Halo, <span id="user-name">Pengguna</span>!</h2>
                     </div>
                     <h1 class="text-3xl md:text-4xl font-bold">Lagu Teratas Kamu</h1>
@@ -98,7 +99,7 @@
                         <div class="receipt-content">
                             <!-- Tracks will be populated here by JS -->
                         </div>
-                        <img src="/api/placeholder/200/50" alt="barcode" class="barcode">
+                        <img src="https://via.placeholder.com/200x50" alt="barcode" class="barcode">
                         <div class="receipt-footer">
                             <p>Terima kasih telah mendengarkan!</p>
                             <p>notetify.com</p>
@@ -108,6 +109,7 @@
             </div>
         </section>
 
+        <!-- Features Section -->
         <section class="py-20 bg-gray-900" id="features">
             <div class="container mx-auto px-6">
                 <h2 class="text-3xl font-bold text-center mb-12">Fitur Notetify</h2>
@@ -133,11 +135,13 @@
     </main>
 
     <footer class="bg-black py-12">
+
         <div class="container mx-auto px-6 text-center">
             <p class="mb-4">© 2025 Notetify. Semua hak dilindungi.</p>
             <p class="opacity-60">Notetify tidak berafiliasi dengan Spotify. Spotify adalah merek dagang terdaftar dari Spotify AB.</p>
         </div>
     </footer>
+
 
     <script src="script.js"></script>
 </body>
