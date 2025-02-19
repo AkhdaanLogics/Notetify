@@ -1,4 +1,9 @@
-import { config } from './config.js';
+// Configuration from environment variables
+const config = {
+    clientId: process.env.SPOTIFY_CLIENT_ID,
+    redirectUri: process.env.SPOTIFY_REDIRECT_URI
+};
+
 
 // Constants
 const SPOTIFY_AUTH_ENDPOINT = 'https://accounts.spotify.com/authorize';
@@ -36,8 +41,9 @@ function initializeAuth() {
         tokenManager.clearToken();
         
         const authUrl = new URL(SPOTIFY_AUTH_ENDPOINT);
-        authUrl.searchParams.append('client_id', config.clientId);
-        authUrl.searchParams.append('redirect_uri', config.redirectUri);
+            authUrl.searchParams.append('client_id', process.env.SPOTIFY_CLIENT_ID || config.clientId);
+            authUrl.searchParams.append('redirect_uri', process.env.SPOTIFY_REDIRECT_URI || config.redirectUri);
+
         authUrl.searchParams.append('scope', scopes);
         authUrl.searchParams.append('response_type', 'token');
         authUrl.searchParams.append('show_dialog', 'true');
