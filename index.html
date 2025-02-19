@@ -7,30 +7,146 @@
     <link rel="stylesheet" href="styles.css">
     <script>
         // Inject Spotify configuration
-        window.SPOTIFY_CLIENT_ID = 'd3c73611110e4fb58aa1d1697e272a8e';
+        window.SPOTIFY_CLIENT_ID = 'your_client_id_here';
         window.SPOTIFY_REDIRECT_URI = window.location.origin;
     </script>
     <script src="script.js"></script>
 </head>
 <body>
     <div class="login-section">
-        <button id="spotify-login">Login with Spotify</button>
+        <button class="spotify-btn" id="spotify-login">Login with Spotify</button>
     </div>
     <div class="app-section hidden">
-        <div id="user-profile">
-            <img id="user-image" src="./assets/default-profile.png" alt="Profile Picture">
-            <h2 id="user-name"></h2>
-        </div>
-        <div class="receipt-container">
-            <div class="receipt-header">
-                <h2>Your Top Tracks</h2>
-                <span class="receipt-date"></span>
+        <div class="receipt-card">
+            <div id="user-profile">
+                <img id="user-image" src="./assets/default-profile.png" alt="Profile Picture">
+                <h2 id="user-name"></h2>
             </div>
-            <div class="receipt-content"></div>
+            <div class="receipt-container">
+                <div class="receipt-header">
+                    <h2>Your Top Tracks</h2>
+                    <span class="receipt-date"></span>
+                </div>
+                <div class="receipt-content"></div>
+                <div class="receipt-footer">
+                    <button class="spotify-btn" id="generate-receipt">Refresh</button>
+                    <button class="spotify-btn" id="logout">Logout</button>
+                </div>
+            </div>
         </div>
-        <button id="generate-receipt">Refresh</button>
-        <button id="logout">Logout</button>
     </div>
     <div id="error-message" class="hidden"></div>
+</body>
+</html>
+
+                    <p class="text-xl opacity-80">Ubah riwayat musik Spotify-mu menjadi receipt digital yang estetik.</p>
+                    <div class="pt-6">
+                        <a href="#" id="spotify-login" class="spotify-btn inline-block">Masuk dengan Spotify</a>
+                    </div>
+                </div>
+                <div class="md:w-1/2 flex justify-center">
+                    <div class="receipt-card">
+                        <div class="receipt-header">
+                            <h2 class="text-xl font-bold">NOTETIFY</h2>
+                            <p>Riwayat Musik Bulanan</p>
+                            <p class="receipt-date">02/18/2025 14:30</p>
+                        </div>
+                        <div class="receipt-content">
+                            <div class="receipt-item">
+                                <span>1. Example Track</span>
+                                <span>3:45</span>
+                            </div>
+                            <div class="receipt-item">
+                                <span>2. Demo Song</span>
+                                <span>4:20</span>
+                            </div>
+                            <div class="receipt-item">
+                                <span>3. Sample Track</span>
+                                <span>2:55</span>
+                            </div>
+                        </div>
+                        <div class="receipt-footer">
+                            <p>Terima kasih telah mendengarkan!</p>
+                            <p>notetify.com</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- App Section -->
+        <section class="min-h-screen flex flex-col items-center justify-center px-4 md:px-0 app-section hidden">
+            <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-12">
+                <div class="md:w-1/2 text-center md:text-left space-y-6">
+                    <div class="flex items-center gap-4 mb-4">
+                        <img id="user-image" src="https://via.placeholder.com/50x50" alt="User profile" class="rounded-full w-12 h-12">
+                        <h2 class="text-2xl font-bold">Halo, <span id="user-name">Pengguna</span>!</h2>
+                    </div>
+                    <h1 class="text-3xl md:text-4xl font-bold">Lagu Teratas Kamu</h1>
+                    <p class="text-xl opacity-80">Berikut receipt musik berdasarkan lagu yang paling sering kamu dengarkan.</p>
+                    <div class="pt-6">
+                        <button id="generate-receipt" class="spotify-btn inline-block">Perbarui Receipt</button>
+                        <button id="download-receipt" class="border border-white py-3 px-6 rounded-full ml-4 hover:bg-white hover:text-black transition">Unduh Image</button>
+                        <button id="logout" class="border border-red-500 text-red-500 py-3 px-6 rounded-full ml-4 hover:bg-red-500 hover:text-white transition">Logout</button>
+                    </div>
+
+                </div>
+                <div class="md:w-1/2 flex justify-center">
+                    <div class="receipt-card">
+                        <div class="receipt-header">
+                            <h2 class="text-xl font-bold">NOTETIFY</h2>
+                            <p>Lagu Teratas Bulan Ini</p>
+                            <p class="receipt-date">02/18/2025 14:30</p>
+                        </div>
+                        <div class="receipt-content">
+                            <!-- Tracks will be populated here by JS -->
+                        </div>
+
+                        <div class="receipt-footer">
+                            <p>Terima kasih telah mendengarkan!</p>
+                            <p>notetify.com</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="py-20 bg-gray-900" id="features">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl font-bold text-center mb-12">Fitur Notetify</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="bg-gray-800 p-6 rounded-lg">
+                        <div class="text-green-400 text-4xl mb-4">🎵</div>
+                        <h3 class="text-xl font-bold mb-2">Riwayat Musik Estetik</h3>
+                        <p class="opacity-80">Ubah daftar putar dan riwayat musik Spotify-mu menjadi receipt yang keren dan dapat dibagikan.</p>
+                    </div>
+                    <div class="bg-gray-800 p-6 rounded-lg">
+                        <div class="text-green-400 text-4xl mb-4">🔄</div>
+                        <h3 class="text-xl font-bold mb-2">Pembaruan Otomatis</h3>
+                        <p class="opacity-80">Dapatkan receipt baru setiap minggu atau bulan berdasarkan kebiasaan mendengarkan musikmu.</p>
+                    </div>
+                    <div class="bg-gray-800 p-6 rounded-lg">
+                        <div class="text-green-400 text-4xl mb-4">🌐</div>
+                        <h3 class="text-xl font-bold mb-2">Bagikan ke Sosial Media</h3>
+                        <p class="opacity-80">Bagikan receipt musikmu ke Instagram, Twitter, atau platform media sosial lainnya.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-black py-12">
+
+        <div class="container mx-auto px-6 text-center">
+            <p class="mb-4">© 2025 Notetify. Semua hak dilindungi.</p>
+            <p class="opacity-60">Notetify tidak berafiliasi dengan Spotify. Spotify adalah merek dagang terdaftar dari Spotify AB.</p>
+        </div>
+    </footer>
+
+
+    <script type="module" src="./script.js"></script>
+
+
 </body>
 </html>
