@@ -1,17 +1,5 @@
-# Ignore environment variables
+# Local development files
 .env
 
-# Ignore node_modules
-node_modules/
-
-# Ignore build files
-dist/
-build/
-
-# Ignore IDE specific files
-.vscode/
-.idea/
-
-# Ignore OS generated files
-.DS_Store
-Thumbs.db
+# Configuration files
+config.js
