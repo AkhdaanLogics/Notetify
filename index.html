@@ -1,43 +1,43 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Online Music App</title>
-    <link rel="stylesheet" href="styles.css">
-    <script>
-        // Inject Spotify configuration
-        window.SPOTIFY_CLIENT_ID = 'your_client_id_here';
-        window.SPOTIFY_REDIRECT_URI = window.location.origin;
-    </script>
-    <script src="script.js"></script>
+    <title>Notetify - Ubah musik favoritmu menjadi receipt musik yang keren</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./styles.css">
+
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 </head>
 <body>
-    <div class="login-section">
-        <button class="spotify-btn" id="spotify-login">Login with Spotify</button>
+    <header class="fixed w-full bg-black bg-opacity-80 backdrop-filter backdrop-blur-md z-10">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+                        <div class="text-2xl font-bold">Notetify</div>
+
+            <ul class="hidden md:flex space-x-10">
+                <li><a href="#" class="hover:text-green-400 transition">Beranda</a></li>
+                <li><a href="#" class="hover:text-green-400 transition">Tentang</a></li>
+                <li><a href="#" class="hover:text-green-400 transition">Kontak</a></li>
+            </ul>
+            <button class="md:hidden" id="menu-toggle">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
+        </nav>
+    </header>
+
+    <div id="error-message" class="fixed top-20 right-0 max-w-md p-4 m-4 bg-red-500 text-white rounded-md shadow-lg transition-opacity z-50 hidden">
+        Error message will appear here
     </div>
-    <div class="app-section hidden">
-        <div class="receipt-card">
-            <div id="user-profile">
-                <img id="user-image" src="./assets/default-profile.png" alt="Profile Picture">
-                <h2 id="user-name"></h2>
-            </div>
-            <div class="receipt-container">
-                <div class="receipt-header">
-                    <h2>Your Top Tracks</h2>
-                    <span class="receipt-date"></span>
-                </div>
-                <div class="receipt-content"></div>
-                <div class="receipt-footer">
-                    <button class="spotify-btn" id="generate-receipt">Refresh</button>
-                    <button class="spotify-btn" id="logout">Logout</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div id="error-message" class="hidden"></div>
-</body>
-</html>
+
+    <main>
+        <!-- Login Section -->
+        <section class="min-h-screen flex flex-col items-center justify-center px-4 md:px-0 login-section">
+            <div class="max-w-6xl mx-auto flex flex-col-reverse md:flex-row items-center justify-between gap-12">
+                <div class="md:w-1/2 text-center md:text-left space-y-6">
+                    <h1 class="text-4xl md:text-6xl font-bold">Notetify</h1>
 
                     <p class="text-xl opacity-80">Ubah riwayat musik Spotify-mu menjadi receipt digital yang estetik.</p>
                     <div class="pt-6">
