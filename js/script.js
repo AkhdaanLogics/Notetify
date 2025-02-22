@@ -7,9 +7,12 @@ function logout() {
 }
 
 // Configuration from window object or defaults
+import { config } from './config.js';
+
 const config = {
-    clientId: 'd3c73611110e4fb58aa1d1697e272a8e',
-    redirectUri: 'http://127.0.0.1:5500',
+    clientId: config.clientId,
+    redirectUri: 'https://mynotetify.vercel.app', // Update this to your Vercel app URL
+
 };
 
 // Constants

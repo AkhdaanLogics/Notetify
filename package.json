@@ -1,5 +1,10 @@
 {
   "dependencies": {
     "html2canvas": "^1.4.1"
+  },
+  "scripts": {
+    "build": "echo 'No build step required'",
+    "start": "http-server ."
   }
+
 }
