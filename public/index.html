@@ -1,15 +1,152 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spotify OAuth App</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Notetify - Ubah musik favoritmu menjadi receipt musik yang keren</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
 <body>
-    <h1>Welcome to the Spotify OAuth App</h1>
-    <p>Please authenticate using the Spotify API.</p>
-<script type="module" src="js/script.js"></script>
+    <header class="fixed w-full bg-black bg-opacity-80 backdrop-filter backdrop-blur-md z-10">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="text-2xl font-bold">Notetify</div>
 
+            <ul class="hidden md:flex space-x-10">
+                <li><a href="#" class="hover:text-green-400 transition">Beranda</a></li>
+                <li><a href="#" class="hover:text-green-400 transition">Tentang</a></li>
+                <li><a href="#" class="hover:text-green-400 transition">Kontak</a></li>
+            </ul>
+            <button class="md:hidden" id="menu-toggle">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
+        </nav>
+    </header>
+
+    <div id="error-message" class="fixed top-20 right-0 max-w-md p-4 m-4 bg-red-500 text-white rounded-md shadow-lg transition-opacity z-50 hidden">
+        Error message will appear here
+    </div>
+
+    <main>
+        <!-- Login Section -->
+        <section class="min-h-screen flex flex-col items-center justify-center px-4 md:px-0 login-section">
+            <div class="max-w-6xl mx-auto flex flex-col-reverse md:flex-row items-center justify-between gap-12">
+                <div class="md:w-1/2 text-center md:text-left space-y-6">
+                    <h1 class="text-5xl md:text-7xl font-extrabold text-green-400">Notetify</h1>
+                    <p class="text-lg md:text-xl opacity-90">Ubah riwayat musik Spotify-mu menjadi receipt digital yang estetik dan mudah dibagikan.</p>
+                    <div class="pt-6">
+                        <a href="#" id="spotify-login" class="spotify-btn inline-block">Masuk dengan Spotify</a>
+                    </div>
+                </div>
+                <div class="md:w-1/2 flex justify-center">
+                    <div class="receipt-card rounded-lg shadow-lg transition-transform duration-300 hover:scale-105">
+                        <div class="receipt-header">
+                            <h2 class="text-xl font-bold">NOTETIFY</h2>
+                            <p class="font-semibold">Riwayat Musik Bulanan</p>
+                            <p class="receipt-date">02/18/2025 14:30</p>
+                        </div>
+                        <div class="receipt-content">
+                            <div class="receipt-item">
+                                <span>1. Example Track</span>
+                                <span>3:45</span>
+                            </div>
+                            <div class="receipt-item">
+                                <span>2. Demo Song</span>
+                                <span>4:20</span>
+                            </div>
+                            <div class="receipt-item">
+                                <span>3. Sample Track</span>
+                                <span>2:55</span>
+                            </div>
+                        </div>
+                        <div class="receipt-footer">
+                            <p class="font-semibold">Terima kasih telah mendengarkan!</p>
+                            <p>notetify.com</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- App Section -->
+        <section class="min-h-screen flex flex-col items-center justify-center px-4 md:px-0 app-section hidden">
+            <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-12">
+                <div class="md:w-1/2 text-center md:text-left space-y-6">
+                    <div class="flex items-center gap-4 mb-4">
+                        <img id="user-image" src="https://via.placeholder.com/50x50" alt="User profile" class="rounded-full w-12 h-12">
+                        <h2 class="text-2xl font-bold">Halo, <span id="user-name">Pengguna</span>!</h2>
+                    </div>
+                    <h1 class="text-3xl md:text-4xl font-bold">Lagu Teratas Kamu</h1>
+                    <p class="text-lg md:text-xl opacity-90">Berikut receipt musik berdasarkan lagu yang paling sering kamu dengarkan. Nikmati!</p>
+                    <div class="pt-6">
+                    <button id="generate-receipt" class="spotify-btn inline-block">Perbarui Receipt</button>
+                    <button id="share" class="border border-green-500 text-green-500 py-3 px-6 rounded-full ml-4 mt-4 hover:bg-green-500 hover:text-white transition">Share</button>
+                    <div id="share-popup" class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+                        <div class="bg-white p-6 rounded-lg">
+                            <h2 class="text-xl font-bold mb-4">Share Your Receipt</h2>
+<button id="share-instagram" class="border border-blue-500 text-blue-500 py-2 px-4 rounded hover:bg-blue-500 hover:text-white transition block mb-2">Share to Instagram</button>
+<button id="download-receipt" class="border border-blue-500 text-blue-500 py-2 px-4 rounded hover:bg-blue-500 hover:text-white transition block mb-2">Download</button>
+<button id="share-whatsapp" class="border border-green-500 text-green-500 py-2 px-4 rounded hover:bg-green-500 hover:text-white transition block">Share to WhatsApp</button>
+
+                            <button id="close-share-popup" class="mt-4 border border-red-500 text-red-500 py-2 px-4 rounded hover:bg-red-500 hover:text-white transition">Close</button>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                <div class="md:w-1/2 flex justify-center">
+                    <div class="receipt-card rounded-lg shadow-lg transition-transform duration-300 hover:scale-105">
+                        <div class="receipt-header">
+                            <h2 class="text-xl font-bold">NOTETIFY</h2>
+                            <p>Lagu Teratas Bulan Ini</p>
+                            <p class="receipt-date">02/18/2025 14:30</p>
+                        </div>
+                        <div class="receipt-content">
+                            <!-- Tracks will be populated here by JS -->
+                        </div>
+                        <div class="receipt-footer">
+                            <p class="font-semibold">Terima kasih telah mendengarkan!</p>
+                            <p>notetify.com</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="py-20 bg-gray-900" id="features">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl font-bold text-center mb-12">Fitur Notetify</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="bg-gray-800 p-6 rounded-lg">
+                        <div class="text-green-400 text-4xl mb-4">🎵</div>
+                        <h3 class="text-xl font-bold mb-2">Riwayat Musik Estetik</h3>
+                        <p class="opacity-80">Ubah daftar putar dan riwayat musik Spotify-mu menjadi receipt yang keren dan dapat dibagikan.</p>
+                    </div>
+                    <div class="bg-gray-800 p-6 rounded-lg">
+                        <div class="text-green-400 text-4xl mb-4">🔄</div>
+                        <h3 class="text-xl font-bold mb-2">Pembaruan Otomatis</h3>
+                        <p class="opacity-80">Dapatkan receipt baru setiap minggu atau bulan berdasarkan kebiasaan mendengarkan musikmu.</p>
+                    </div>
+                    <div class="bg-gray-800 p-6 rounded-lg">
+                        <div class="text-green-400 text-4xl mb-4">🌐</div>
+                        <h3 class="text-xl font-bold mb-2">Bagikan ke Sosial Media</h3>
+                        <p class="opacity-80">Bagikan receipt musikmu ke Instagram, Twitter, atau platform media sosial lainnya.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-black py-12">
+        <div class="container mx-auto px-6 text-center">
+            <p class="mb-4">© 2025 Akhdaan The Great. Semua hak dilindungi.</p>
+            <p class="opacity-60">Notetify tidak berafiliasi dengan Spotify. Spotify adalah merek dagang terdaftar dari Spotify AB.</p>
+        </div>
+    </footer>
+    <script type="module" src="js/script.js"></script>
 </body>
 </html>
