@@ -9,11 +9,7 @@ function logout() {
 // Configuration from window object or defaults
 import { config } from './config.js';
 
-const config = {
-    clientId: config.clientId,
-    redirectUri: 'https://mynotetify.vercel.app', // Update this to your Vercel app URL
-
-};
+const { clientId, redirectUri } = config;
 
 // Constants
 const SPOTIFY_AUTH_ENDPOINT = 'https://accounts.spotify.com/authorize';
@@ -50,8 +46,8 @@ function initializeAuth() {
         tokenManager.clearToken();
         
         const authUrl = new URL(SPOTIFY_AUTH_ENDPOINT);
-        authUrl.searchParams.append('client_id', config.clientId);
-        authUrl.searchParams.append('redirect_uri', config.redirectUri);
+        authUrl.searchParams.append('client_id', clientId);
+        authUrl.searchParams.append('redirect_uri', redirectUri);
         authUrl.searchParams.append('scope', scopes);
         authUrl.searchParams.append('response_type', 'token');
         authUrl.searchParams.append('show_dialog', 'true');
@@ -202,6 +198,7 @@ function handleCallback() {
     console.log('❌ No token found in hash');
     return false;
 }
+
 // Update profile UI
 function updateUserProfile(data) {
     if (!data) return;
@@ -314,7 +311,6 @@ function showError(message) {
     }
 }
 
-// Initialize app
 function initializeApp() {
     initializeAuth();
 
@@ -339,9 +335,10 @@ function initializeApp() {
     } else {
         console.log('No token, showing login section'); // Debug line
         document.querySelector('.login-section')?.classList.remove('hidden');
-        document.querySelector('.appSection')?.classList.add('hidden');
+        document.querySelector('.app-section')?.classList.add('hidden');
     }
 }
+
 // Start app
 document.addEventListener('DOMContentLoaded', () => {
     initializeApp();
