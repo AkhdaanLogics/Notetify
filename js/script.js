@@ -45,7 +45,8 @@ function initializeAuth() {
     document.getElementById('spotify-login').addEventListener('click', () => {
         tokenManager.clearToken();
         
-        const authUrl = new URL(SPOTIFY_AUTH_ENDPOINT);
+    const authUrl = new URL(SPOTIFY_AUTH_ENDPOINT + '/authorize');
+
         authUrl.searchParams.append('client_id', clientId);
         authUrl.searchParams.append('redirect_uri', redirectUri);
         authUrl.searchParams.append('scope', scopes);
@@ -67,11 +68,12 @@ async function callSpotifyAPI(endpoint, retries = 3) {
     console.log(`🔍 Attempting to call API endpoint: ${endpoint}`);
     console.log(`🎫 Current token: ${tokenManager.getToken()?.substring(0, 10)}...`);
 
-    const token = tokenManager.getToken();
-    if (!token) {
-        console.error('❌ No token found');
-        throw new Error('No authentication token available');
-    }
+        const code = new URLSearchParams(window.location.search).get('code');
+        if (!code) {
+            console.error('❌ No authorization code found');
+            throw new Error('No authorization code available');
+        }
+
 
     // Check cache first
     if (apiCache.has(endpoint)) {
