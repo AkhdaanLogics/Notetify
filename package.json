@@ -3,7 +3,8 @@
     "html2canvas": "^1.4.1"
   },
   "scripts": {
-    "build": "echo 'No build step required'",
+"build": "mkdir -p public && cp -r * public/",
+
     "start": "http-server ."
   }
 
