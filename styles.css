@@ -147,18 +147,21 @@ body {
 
 /* New styles for top playlist section */
 .top-playlist-section {
-    padding: 20px;
+    padding: 10px;
+    background-color: #1e1e1e; /* Simple background */
 }
 
 .top-playlist-section .receipt-card {
-    width: 100%; /* Full width for responsiveness */
-    max-width: 600px; /* Limit the maximum width */
+    width: auto; /* Allow auto width */
+    max-width: none; /* Remove max width */
+    margin: 10px 0; /* Add margin for spacing */
 }
 
 .top-playlist-section .receipt-header {
-    border-bottom: 2px solid #1DB954; /* Green border for the header */
+    border-bottom: none; /* Remove border */
+    font-size: 16px; /* Adjust font size */
 }
 
 .top-playlist-section .receipt-footer {
-    font-size: 14px; /* Slightly larger footer text */
+    font-size: 12px; /* Keep footer text size */
 }
