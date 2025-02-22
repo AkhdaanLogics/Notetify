@@ -23,11 +23,8 @@ async function generateCodeChallenge(verifier) {
 
 // Auth Initialization
 async function initializeAuth() {
-    document.addEventListener('DOMContentLoaded', () => {
-        const loginButton = document.getElementById('spotify-login');
-        if (loginButton) {
-            loginButton.addEventListener('click', async () => {
-
+    window.addEventListener('DOMContentLoaded', () => {
+        document.getElementById('spotify-login').addEventListener('click', async () => {
 
 
 
@@ -41,14 +38,12 @@ async function initializeAuth() {
 
 
 
-
         const codeChallenge = await generateCodeChallenge(codeVerifier);
 
     
     localStorage.setItem('code_verifier', codeVerifier);
     
             const authUrl = new URL('https://accounts.spotify.com/authorize');
-
 
 
 
@@ -70,7 +65,6 @@ async function initializeAuth() {
 async function handleAuthCallback() {
   const params = new URLSearchParams(window.location.search);
             const code = params.get('code');
-
 
 
 
@@ -111,7 +105,6 @@ function initializeApp() {
 
 
 
-
   
   if (hasToken) {
     document.querySelector('.login-section').classList.add('hidden');
@@ -125,7 +118,6 @@ function initializeApp() {
 // Error Handling
 function showError(message) {
         const errorElement = document.getElementById('error-message');
-
 
 
 
