@@ -4,13 +4,10 @@ body {
     color: #FFFFFF;
 }
 
-
-
 .receipt-card {
     background-color: #FFFFFF;
     color: #121212;
     border-radius: 8px;
-
     padding: 24px;
     width: 320px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
@@ -146,4 +143,22 @@ body {
         padding-left: 16px;
         padding-right: 16px;
     }
+}
+
+/* New styles for top playlist section */
+.top-playlist-section {
+    padding: 20px;
+}
+
+.top-playlist-section .receipt-card {
+    width: 100%; /* Full width for responsiveness */
+    max-width: 600px; /* Limit the maximum width */
+}
+
+.top-playlist-section .receipt-header {
+    border-bottom: 2px solid #1DB954; /* Green border for the header */
+}
+
+.top-playlist-section .receipt-footer {
+    font-size: 14px; /* Slightly larger footer text */
 }
