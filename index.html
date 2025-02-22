@@ -7,13 +7,12 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./styles.css">
-
-    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
 <body>
     <header class="fixed w-full bg-black bg-opacity-80 backdrop-filter backdrop-blur-md z-10">
         <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-                        <div class="text-2xl font-bold">Notetify</div>
+            <div class="text-2xl font-bold">Notetify</div>
 
             <ul class="hidden md:flex space-x-10">
                 <li><a href="#" class="hover:text-green-400 transition">Beranda</a></li>
@@ -37,18 +36,17 @@
         <section class="min-h-screen flex flex-col items-center justify-center px-4 md:px-0 login-section">
             <div class="max-w-6xl mx-auto flex flex-col-reverse md:flex-row items-center justify-between gap-12">
                 <div class="md:w-1/2 text-center md:text-left space-y-6">
-                    <h1 class="text-4xl md:text-6xl font-bold">Notetify</h1>
-
-                    <p class="text-xl opacity-80">Ubah riwayat musik Spotify-mu menjadi receipt digital yang estetik.</p>
+                    <h1 class="text-5xl md:text-7xl font-extrabold text-green-400">Notetify</h1>
+                    <p class="text-lg md:text-xl opacity-90">Ubah riwayat musik Spotify-mu menjadi receipt digital yang estetik dan mudah dibagikan.</p>
                     <div class="pt-6">
                         <a href="#" id="spotify-login" class="spotify-btn inline-block">Masuk dengan Spotify</a>
                     </div>
                 </div>
                 <div class="md:w-1/2 flex justify-center">
-                    <div class="receipt-card">
+                    <div class="receipt-card rounded-lg shadow-lg transition-transform duration-300 hover:scale-105">
                         <div class="receipt-header">
                             <h2 class="text-xl font-bold">NOTETIFY</h2>
-                            <p>Riwayat Musik Bulanan</p>
+                            <p class="font-semibold">Riwayat Musik Bulanan</p>
                             <p class="receipt-date">02/18/2025 14:30</p>
                         </div>
                         <div class="receipt-content">
@@ -66,7 +64,7 @@
                             </div>
                         </div>
                         <div class="receipt-footer">
-                            <p>Terima kasih telah mendengarkan!</p>
+                            <p class="font-semibold">Terima kasih telah mendengarkan!</p>
                             <p>notetify.com</p>
                         </div>
                     </div>
@@ -74,11 +72,8 @@
             </div>
         </section>
 
-
-
         <!-- App Section -->
-        <section class="min-h-screen flex flex-col items-center justify-center px-4 md:px-0 app-section hidden">        
-
+        <section class="min-h-screen flex flex-col items-center justify-center px-4 md:px-0 app-section hidden">
             <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-12">
                 <div class="md:w-1/2 text-center md:text-left space-y-6">
                     <div class="flex items-center gap-4 mb-4">
@@ -86,16 +81,24 @@
                         <h2 class="text-2xl font-bold">Halo, <span id="user-name">Pengguna</span>!</h2>
                     </div>
                     <h1 class="text-3xl md:text-4xl font-bold">Lagu Teratas Kamu</h1>
-                    <p class="text-xl opacity-80">Berikut receipt musik berdasarkan lagu yang paling sering kamu dengarkan.</p>
+                    <p class="text-lg md:text-xl opacity-90">Berikut receipt musik berdasarkan lagu yang paling sering kamu dengarkan. Nikmati!</p>
                     <div class="pt-6">
-                        <button id="generate-receipt" class="spotify-btn inline-block">Perbarui Receipt</button>
-                        <button id="download-receipt" class="border border-white py-3 px-6 rounded-full ml-4 hover:bg-white hover:text-black transition">Unduh Image</button>
-                        <button id="logout" class="border border-red-500 text-red-500 py-3 px-6 rounded-full ml-4 hover:bg-red-500 hover:text-white transition">Logout</button>
-                    </div>
+                    <button id="generate-receipt" class="spotify-btn inline-block">Perbarui Receipt</button>
+                    <button id="share" class="border border-green-500 text-green-500 py-3 px-6 rounded-full ml-4 mt-4 hover:bg-green-500 hover:text-white transition">Share</button>
+                    <div id="share-popup" class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+                        <div class="bg-white p-6 rounded-lg">
+                            <h2 class="text-xl font-bold mb-4">Share Your Receipt</h2>
+<button id="share-instagram" class="border border-blue-500 text-blue-500 py-2 px-4 rounded hover:bg-blue-500 hover:text-white transition block mb-2">Share to Instagram</button>
+<button id="download-receipt" class="border border-blue-500 text-blue-500 py-2 px-4 rounded hover:bg-blue-500 hover:text-white transition block mb-2">Download</button>
+<button id="share-whatsapp" class="border border-green-500 text-green-500 py-2 px-4 rounded hover:bg-green-500 hover:text-white transition block">Share to WhatsApp</button>
 
+                            <button id="close-share-popup" class="mt-4 border border-red-500 text-red-500 py-2 px-4 rounded hover:bg-red-500 hover:text-white transition">Close</button>
+                        </div>
+                    </div>
+                    </div>
                 </div>
                 <div class="md:w-1/2 flex justify-center">
-                    <div class="receipt-card">
+                    <div class="receipt-card rounded-lg shadow-lg transition-transform duration-300 hover:scale-105">
                         <div class="receipt-header">
                             <h2 class="text-xl font-bold">NOTETIFY</h2>
                             <p>Lagu Teratas Bulan Ini</p>
@@ -104,9 +107,8 @@
                         <div class="receipt-content">
                             <!-- Tracks will be populated here by JS -->
                         </div>
-
                         <div class="receipt-footer">
-                            <p>Terima kasih telah mendengarkan!</p>
+                            <p class="font-semibold">Terima kasih telah mendengarkan!</p>
                             <p>notetify.com</p>
                         </div>
                     </div>
@@ -140,16 +142,11 @@
     </main>
 
     <footer class="bg-black py-12">
-
         <div class="container mx-auto px-6 text-center">
-            <p class="mb-4">© 2025 Notetify. Semua hak dilindungi.</p>
+            <p class="mb-4">© 2025 Akhdaan The Great. Semua hak dilindungi.</p>
             <p class="opacity-60">Notetify tidak berafiliasi dengan Spotify. Spotify adalah merek dagang terdaftar dari Spotify AB.</p>
         </div>
     </footer>
-
-
-    <script type="module" src="./script.js"></script>
-
-
+    <script type="module" src="js/script.js"></script>
 </body>
 </html>
