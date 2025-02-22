@@ -52,7 +52,6 @@ function initializeAuth() {
         authUrl.searchParams.append('scope', scopes);
         authUrl.searchParams.append('response_type', 'token');
         authUrl.searchParams.append('show_dialog', 'true');
-        // Tambahkan ini
         authUrl.searchParams.append('state', 'spotify_auth_state');
 
         window.location.href = authUrl.toString();
@@ -337,8 +336,20 @@ function initializeApp() {
     } else {
         console.log('No token, showing login section'); // Debug line
         document.querySelector('.login-section')?.classList.remove('hidden');
-        document.querySelector('.app-section')?.classList.add('hidden');
+        document.querySelector('.appSection')?.classList.add('hidden');
     }
 }
 // Start app
-document.addEventListener('DOMContentLoaded', initializeApp);
+document.addEventListener('DOMContentLoaded', () => {
+    initializeApp();
+
+    // Update tanggal saat halaman dimuat
+    const dateElem = document.querySelector('.receipt-date');
+    if (dateElem) {
+        dateElem.textContent = new Date().toLocaleDateString('id-ID', {
+            year: 'numeric',
+            month: 'long',
+            day: '2-digit'
+        });
+    }
+});
