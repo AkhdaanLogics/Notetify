@@ -5,64 +5,61 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import axios from 'axios';
 
-// Konfigurasi environment variables
+// Load environment variables
 dotenv.config();
 
-// Inisialisasi Express
+// Initialize Express app
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5500;
 
-// Resolve __dirname untuk ES Modules
+// Get __dirname equivalent in ES modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Middleware
+// Middleware setup
 app.use(cors({
-  origin: process.env.CLIENT_URL || 'http://localhost:3000', // Izinkan akses dari frontend
+  origin: process.env.CLIENT_URL || 'http://localhost:5500',
   credentials: true,
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-// Serve static files dari folder public
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
-// Route untuk root path
+// Route for serving the main HTML page
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
 });
 
-app.post('/api/token', async (req, res) => {
-  // Validate the access token
-  const { access_token } = req.body;
-  if (!access_token) {
-    return res.status(401).json({ error: 'Access token is required' });
-  }
+app.get('/callback', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
+});
 
+
+// Route for token exchange
+app.post('/api/token', async (req, res) => {
   try {
     const { code, code_verifier } = req.body;
 
-    // Validasi input
+    // Validate input
     if (!code || !code_verifier) {
       return res.status(400).json({ error: 'Missing code or code_verifier' });
     }
 
-    // Parameter untuk Spotify API
+    // Parameters for Spotify API token exchange
     const params = new URLSearchParams({
       client_id: process.env.SPOTIFY_CLIENT_ID,
-      client_secret: process.env.SPOTIFY_CLIENT_SECRET,
       grant_type: 'authorization_code',
-      code,
+      code: code,
       redirect_uri: process.env.REDIRECT_URI,
-      code_verifier,
+      code_verifier: code_verifier,
     });
 
-    // Request token to Spotify
-    const response = await axios.post('https://accounts.spotify.com/api/token', params, {
+    // Request token from Spotify
+    const response = await axios.post('https://accounts.spotify.com/api/token', params.toString(), {
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     });
 
-    // Kirim response ke client
+    // Send tokens back to client
     res.json({
       access_token: response.data.access_token,
       expires_in: response.data.expires_in,
@@ -70,31 +67,59 @@ app.post('/api/token', async (req, res) => {
     });
   } catch (error) {
     console.error('Token exchange error:', error.response?.data || error.message);
-    res.status(500).json({ error: 'Failed to authenticate with Spotify' });
+    res.status(error.response?.status || 500).json({
+      error: 'Failed to authenticate with Spotify',
+      details: error.response?.data || error.message
+    });
   }
 });
 
-app.get('/api/auth', (req, res) => {
-  const authUrl = `https://accounts.spotify.com/authorize?client_id=${process.env.SPOTIFY_CLIENT_ID}&redirect_uri=${process.env.REDIRECT_URI}&response_type=code&scope=user-read-private user-read-email`;
-  res.redirect(authUrl);
-});
+// Route for token refresh
+app.post('/api/refresh', async (req, res) => {
+  try {
+    const { refresh_token } = req.body;
 
-// Middleware for token validation
-app.use((req, res, next) => {
-  const { access_token } = req.headers;
-  if (!access_token) {
-    return res.status(401).json({ error: 'Access token is required' });
+    // Validate input
+    if (!refresh_token) {
+      return res.status(400).json({ error: 'Missing refresh token' });
+    }
+
+    // Parameters for token refresh
+    const params = new URLSearchParams({
+      client_id: process.env.SPOTIFY_CLIENT_ID,
+      grant_type: 'refresh_token',
+      refresh_token: refresh_token,
+    });
+
+    // Request new access token from Spotify
+    const response = await axios.post('https://accounts.spotify.com/api/token', params.toString(), {
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    });
+
+    // Send new token back to client
+    res.json({
+      access_token: response.data.access_token,
+      expires_in: response.data.expires_in,
+      // The refresh token may or may not be returned
+      refresh_token: response.data.refresh_token,
+    });
+  } catch (error) {
+    console.error('Token refresh error:', error.response?.data || error.message);
+    res.status(error.response?.status || 500).json({
+      error: 'Failed to refresh token',
+      details: error.response?.data || error.message
+    });
   }
-  next();
 });
 
+// Error handling middleware
 app.use((err, req, res, next) => {
-  console.error('Error occurred:', err.stack); // Added logging for errors
-  res.status(500).json({ error: 'Something went wrong!' });
+  console.error('Server error:', err.stack);
+  res.status(500).json({ error: 'Internal server error' });
 });
-
 
 // Start server
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
+  console.log(`Make sure to set up the correct SPOTIFY_CLIENT_ID and REDIRECT_URI in your .env file`);
 });
