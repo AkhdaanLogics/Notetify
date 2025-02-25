@@ -1,81 +1,101 @@
+/* General Styles */
 body {
     font-family: 'Space Mono', monospace;
     background-color: #121212;
     color: #FFFFFF;
 }
 
-
+/* Receipt Card Styles */
 .receipt-card {
-    background-color: #FFFFFF !important;
-    color: #121212 !important;
-    padding: 24px !important;
-    width: 320px !important;
-    margin: 0 auto !important;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3) !important;
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
+    background-color: #FFFFFF;
+    color: #121212;
+    padding: 24px;
+    width: 320px;
+    margin: 0 auto;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    border-radius: 8px; /* Rounded corners */
 }
 
 .receipt-card:hover {
     transform: translateY(-5px);
+    transition: transform 0.3s ease; /* Hover effect */
 }
 
+/* Receipt Content */
 .receipt-content {
-    display: block !important;
-    width: 100% !important;
-    min-height: 200px !important;
-    margin: 16px 0 !important;
+    display: block;
+    width: 100%;
+    min-height: 200px;
+    margin: 16px 0;
 }
 
+/* Visibility Control */
 .hidden {
-    display: none !important;
+    display: none;
 }
 
+/* App Section Styles */
 .app-section:not(.hidden) {
-    display: block !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    width: 100%;
+    padding: 20px;
 }
 
+/* Receipt Item Styles */
 .receipt-item {
-    display: flex !important;
-    justify-content: space-between !important;
-    align-items: flex-start !important;
-    padding: 8px 0 !important;
-    margin-bottom: 8px !important;
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* Center vertically */
+    padding: 8px 0;
+    width: 100%;
+    border-bottom: 1px dashed #ccc; /* Divider between items */
 }
 
 .receipt-item:last-child {
-    border-bottom: none;
+    border-bottom: none; /* Remove divider for last item */
 }
 
+/* Receipt Date */
 .receipt-date {
     font-size: 0.8rem;
     opacity: 0.75;
     margin-top: 4px;
 }
 
-.receipt-header,
+/* Receipt Header */
+.receipt-header {
+    text-align: center;
+    border-bottom: 2px dashed #121212;
+    padding-bottom: 12px;
+    margin-bottom: 12px;
+}
+
+.receipt-header h2 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 4px;
+}
+
+/* Receipt Footer */
 .receipt-footer {
-    text-align: center !important;
-    width: 100% !important;
-    display: block !important;
+    text-align: center;
+    border-top: 2px dashed #121212;
+    padding-top: 12px;
+    margin-top: 12px;
 }
 
-.receipt-content > div {
-    width: 100% !important;
-    margin: 0 !important;
-    padding: 8px 0 !important;
+/* Barcode Styles */
+.barcode {
+    height: 50px;
+    width: 80%;
+    margin: 12px auto;
+    display: block;
 }
 
-.app-section:not(.hidden) {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    min-height: 100vh !important;
-    width: 100% !important;
-    padding: 20px !important;
-}
-
+/* Button Styles */
 .spotify-btn {
     background-color: #1DB954;
     color: white;
@@ -91,17 +111,7 @@ body {
     box-shadow: 0 5px 15px rgba(29, 185, 84, 0.4);
 }
 
-.barcode {
-    height: 50px;
-    margin: 24px auto;
-    display: block;
-}
-
-.transition {
-    transition: all 0.3s ease;
-}
-
-/* Mobile menu */
+/* Mobile Menu Styles */
 .mobile-menu {
     position: fixed;
     top: 0;
@@ -141,7 +151,18 @@ body {
     cursor: pointer;
 }
 
-/* Animations */
+/* Loading Animation */
+@keyframes pulse {
+    0% { opacity: 0.6; }
+    50% { opacity: 1; }
+    100% { opacity: 0.6; }
+}
+
+.loading-animation {
+    animation: pulse 1.5s infinite ease-in-out;
+}
+
+/* Fade In Animation */
 @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
@@ -151,26 +172,49 @@ body {
     animation: fadeIn 1s ease-in-out;
 }
 
-/* Hiding elements */
-.hidden {
-    display: none !important;
-}
-
-/* Dark theme adjustments */
+/* Dark Theme Adjustments */
 @media (prefers-color-scheme: dark) {
     .receipt-card {
         box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
     }
 }
 
-/* Responsive adjustments */
+/* Responsive Adjustments */
 @media screen and (max-width: 768px) {
     .receipt-card {
         width: 280px;
     }
-    
+
     section {
         padding-left: 16px;
         padding-right: 16px;
     }
+}
+
+/* Track and Artist Styles */
+.track-name {
+    flex-grow: 1;
+    text-align: left;
+    font-weight: bold; /* Bold for track name */
+}
+
+.track-duration {
+    margin-left: 20px;
+    font-weight: bold; /* Bold for duration */
+}
+
+.artist-name {
+    font-size: 0.75rem;
+    opacity: 0.7;
+    width: 100%;
+    text-align: left;
+    margin-top: 4px;
+    padding-left: 1rem;
+    color: #666; /* Darker color for artist */
+}
+
+/* Divider for Track Separation */
+.receipt-divider {
+    border-bottom: 1px dashed #ccc;
+    margin: 8px 0;
 }
