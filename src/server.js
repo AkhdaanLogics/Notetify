@@ -112,7 +112,28 @@ app.post('/api/refresh', async (req, res) => {
   }
 });
 
-// Error handling middleware
+app.get('/api/top-tracks', async (req, res) => {
+  const accessToken = req.headers['authorization']?.split(' ')[1];
+  if (!accessToken) {
+    return res.status(401).json({ error: 'Access token is required' });
+  }
+
+  try {
+    const response = await axios.get('https://api.spotify.com/v1/me/top/tracks?limit=10', {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    res.json(response.data);
+  } catch (error) {
+    console.error('Error fetching top tracks:', error.response?.data || error.message);
+    res.status(error.response?.status || 500).json({
+      error: 'Failed to fetch top tracks',
+      details: error.response?.data || error.message,
+    });
+  }
+});
+
 app.use((err, req, res, next) => {
   console.error('Server error:', err.stack);
   res.status(500).json({ error: 'Internal server error' });
