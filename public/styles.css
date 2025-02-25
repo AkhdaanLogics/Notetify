@@ -3,17 +3,24 @@ body {
     font-family: 'Space Mono', monospace;
     background-color: #121212;
     color: #FFFFFF;
+    margin: 0;
+    padding: 0;
 }
 
 /* Receipt Card Styles */
 .receipt-card {
     background-color: #FFFFFF;
     color: #121212;
-    padding: 24px;
-    width: 320px;
-    margin: 0 auto;
+    padding: 32px; /* Increased padding for better spacing */
+
+    width: 400px; /* Kept larger fixed width for better layout */
+    min-height: 350px; /* Increased minimum height to prevent cutting off header/footer */
+
+    margin: 20px;
+    margin-top: 60px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
     border-radius: 8px; /* Rounded corners */
+    overflow: visible; /* Set to visible to ensure content is displayed */
 }
 
 .receipt-card:hover {
@@ -23,10 +30,14 @@ body {
 
 /* Receipt Content */
 .receipt-content {
-    display: block;
-    width: 100%;
-    min-height: 200px;
-    margin: 16px 0;
+    width: 100% !important;
+    min-height: auto !important;
+    overflow: visible !important;
+    padding: 8px 0; /* Padding kiri dan kanan */
+}
+
+.receipt-item, .artist-name, .receipt-divider {
+    overflow: visible !important;
 }
 
 /* Visibility Control */
@@ -48,10 +59,10 @@ body {
 .receipt-item {
     display: flex;
     justify-content: space-between;
-    align-items: center; /* Center vertically */
-    padding: 8px 0;
+    align-items: center;
+    padding: 4px 0; /* Kurangi padding */
     width: 100%;
-    border-bottom: 1px dashed #ccc; /* Divider between items */
+    border-bottom: 1px dashed #ccc;
 }
 
 .receipt-item:last-child {
@@ -69,8 +80,8 @@ body {
 .receipt-header {
     text-align: center;
     border-bottom: 2px dashed #121212;
-    padding-bottom: 12px;
-    margin-bottom: 12px;
+    padding: 8px 0; /* Kurangi padding atas dan bawah */
+    margin-bottom: 8px; /* Kurangi margin */
 }
 
 .receipt-header h2 {
@@ -83,8 +94,8 @@ body {
 .receipt-footer {
     text-align: center;
     border-top: 2px dashed #121212;
-    padding-top: 12px;
-    margin-top: 12px;
+    padding: 8px 0; /* Kurangi padding atas dan bawah */
+    margin-top: 8px; /* Kurangi margin */
 }
 
 /* Barcode Styles */
@@ -204,13 +215,12 @@ body {
 }
 
 .artist-name {
-    font-size: 0.75rem;
+    font-size: 0.7rem; /* Kurangi ukuran font */
     opacity: 0.7;
     width: 100%;
     text-align: left;
-    margin-top: 4px;
-    padding-left: 1rem;
-    color: #666; /* Darker color for artist */
+    margin-top: 2px; /* Kurangi margin */
+    padding-left: 0.5rem; /* Kurangi padding */
 }
 
 /* Divider for Track Separation */

@@ -61,12 +61,14 @@ function initializeUI() {
   }
 
   // Setup download button
+  // In script.js, update the download button setup:
   const downloadButton = document.getElementById('download-receipt');
   if (downloadButton) {
-    downloadButton.addEventListener('click', () => {
+    downloadButton.addEventListener('click', async () => {
       console.log('Download button clicked');
       try {
-        new ReceiptCapture().captureReceipt();
+        const receiptCapture = new ReceiptCapture();
+        await receiptCapture.captureReceipt();
         if (sharePopup) {
           sharePopup.classList.add('hidden');
         }
@@ -78,7 +80,8 @@ function initializeUI() {
     console.error('Download button not found');
   }
 
-  // Add logout button
+    // Add logout button below the generate receipt button
+
   const appSection = document.querySelector('.app-section');
   if (appSection) {
     const logoutButton = document.createElement('button');
@@ -92,10 +95,49 @@ function initializeUI() {
     });
 
     // Add logout button to the document
-    const buttonContainer = document.createElement('div');
+    const buttonContainer = document.createElement('div'); // Container for buttons
+
     buttonContainer.className = 'mt-4 text-center';
     buttonContainer.appendChild(logoutButton);
-    appSection.appendChild(buttonContainer);
+    appSection.appendChild(buttonContainer); // Append button container to app section
+  }
+  // In script.js, add these handlers
+
+  // Setup WhatsApp share button
+  const whatsAppButton = document.getElementById('share-whatsapp');
+  if (whatsAppButton) {
+    whatsAppButton.addEventListener('click', async () => {
+      try {
+        const receiptCapture = new ReceiptCapture();
+        const imageUrl = await receiptCapture.captureReceipt();
+        
+        // Since we can't directly share an image via URL, we'll share a text message
+        const text = encodeURIComponent('Check out my Notetify music receipt!');
+        window.open(`https://wa.me/?text=${text}`, '_blank');
+        
+        if (sharePopup) {
+          sharePopup.classList.add('hidden');
+        }
+      } catch (error) {
+        showError(`WhatsApp sharing failed: ${error.message}`);
+      }
+    });
+  }
+
+  // Setup Instagram share button
+  const instagramButton = document.getElementById('share-instagram');
+  if (instagramButton) {
+    instagramButton.addEventListener('click', () => {
+      // Instagram doesn't support direct sharing via web links
+      // Inform the user to download and share manually
+      alert('To share on Instagram: \n1. Download your receipt first \n2. Open Instagram \n3. Create a new post or story with the downloaded image');
+      
+      // Trigger download
+      const downloadButton = document.getElementById('download-receipt');
+      if (downloadButton) {
+        downloadButton.click();
+      }
+    });
   }
 }
 
